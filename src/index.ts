@@ -23,7 +23,7 @@ export interface CreateSettingsOptions {
 }
 
 export const createSettings = async (
-  {cert_path, key_path, key_pw, hostname}: CreateSettingsOptions,
+  {cert_path, key_path, key_pw, hostname}: CreateSettingsOptions = {},
 ): Promise<Settings> => {
   const options: http2.SecureClientSessionOptions = {};
   if (cert_path !== void 0 && key_path !== void 0) {

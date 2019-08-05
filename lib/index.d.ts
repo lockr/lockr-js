@@ -7,4 +7,4 @@ export interface CreateSettingsOptions {
     readonly key_pw?: string;
     readonly hostname?: string;
 }
-export declare const createSettings: ({ cert_path, key_path, key_pw, hostname }: CreateSettingsOptions) => Promise<Settings>;
+export declare const createSettings: ({ cert_path, key_path, key_pw, hostname }?: CreateSettingsOptions) => Promise<Settings>;
