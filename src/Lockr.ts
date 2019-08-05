@@ -1,7 +1,8 @@
 import {md, pki} from 'node-forge';
 
+import {Aes256CbcSha256Raw} from './key-wrapper';
 import LockrClient from './LockrClient';
-import {CsrSubject, SecretInfoStorage} from './types';
+import {Client, CsrSubject, SecretInfoStorage} from './types';
 
 const default_dn = {
   country: 'US',
@@ -86,5 +87,60 @@ export default class Lockr {
         },
       },
     });
+  }
+
+  public async getInfo(): Promise<Client> {
+    const query = `
+    {
+      self {
+        env
+        label
+        keyring {
+          id
+          label
+          hasCreditCard
+          trialEnd
+        }
+        auth {
+          ... on LockrCert {
+            expires
+          }
+        }
+      }
+    }
+    `;
+    return await this.client.query({query});
+  }
+
+  public async createSecretValue(
+    name: string,
+    value: Buffer,
+    label?: string,
+    sovereignty?: string,
+  ): Promise<string> {
+    const info = await this.info.getSecretInfo(name);
+    const {ciphertext, wrapping_key} = await (info === void 0
+      ? Aes256CbcSha256Raw.encrypt(value)
+      : Aes256CbcSha256Raw.reencrypt(value, info.wrapping_key));
+    const query = `
+    mutation EnsureSecret($input: EnsureSecretValue!) {
+      ensureSecretValue(input: $input) {
+        id
+      }
+    }
+    `;
+    const data = await this.client.query({
+      query,
+      variables: {
+        input: {
+          name,
+          label: label === void 0 ? '' : label,
+          value: ciphertext.toString('base64'),
+          sovereignty,
+        },
+      },
+    });
+    await this.info.setSecretInfo(name, {wrapping_key});
+    return data.ensureSecretValue.id;
   }
 }

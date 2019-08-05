@@ -1,5 +1,6 @@
+/// <reference types="node" />
 import LockrClient from './LockrClient';
-import { CsrSubject, SecretInfoStorage } from './types';
+import { Client, CsrSubject, SecretInfoStorage } from './types';
 export default class Lockr {
     private client;
     private info;
@@ -10,4 +11,6 @@ export default class Lockr {
         env: string;
     }>;
     createPantheonClient(client_token: string): Promise<void>;
+    getInfo(): Promise<Client>;
+    createSecretValue(name: string, value: Buffer, label?: string, sovereignty?: string): Promise<string>;
 }
