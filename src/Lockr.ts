@@ -183,4 +183,17 @@ export default class Lockr {
       variables: {input: {secretName: name}},
     });
   }
+
+  public async generateKey(size: number = 256): Promise<Buffer> {
+    const query = `
+    query RandomKey($size: KeySize) {
+      randomKey(size: $size)
+    }
+    `;
+    const data = await this.client.query({
+      query,
+      variables: {size: `AES${size}`},
+    });
+    return Buffer.from(data.randomKey, 'base64');
+  }
 }

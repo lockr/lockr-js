@@ -15,4 +15,5 @@ export default class Lockr {
     createSecretValue(name: string, value: Buffer, label?: string, sovereignty?: string): Promise<string>;
     getSecretValue(name: string): Promise<Buffer>;
     deleteSecretValue(name: string): Promise<void>;
+    generateKey(size?: number): Promise<Buffer>;
 }
