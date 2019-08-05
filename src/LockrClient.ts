@@ -4,7 +4,7 @@ import {GraphQLQuery, Settings} from './types';
 
 const user_agent = `node/${process.version} LockrClient/0.1.0`;
 
-export default class LockrClient {
+export class LockrClient {
   private settings: Settings;
   private _session?: http2.ClientHttp2Session;
 
@@ -64,3 +64,5 @@ export default class LockrClient {
     });
   }
 }
+
+export default LockrClient;

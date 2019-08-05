@@ -1,5 +1,5 @@
-import {md, pki} from 'node-forge';
 import * as yaml from 'js-yaml';
+import {md, pki} from 'node-forge';
 
 import {Aes256CbcSha256Raw} from './key-wrapper';
 import LockrClient from './LockrClient';

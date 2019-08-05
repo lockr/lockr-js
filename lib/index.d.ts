@@ -1,5 +1,6 @@
 import { Settings } from './types';
 export { Client, Keyring, ClientAuth, CsrSubject, SecretInfo, SecretInfoStorage, Settings, } from './types';
+export { LockrClient } from './LockrClient';
 export { Lockr } from './Lockr';
 export interface CreateSettingsOptions {
     readonly cert_path?: string;

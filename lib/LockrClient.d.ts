@@ -1,5 +1,5 @@
 import { GraphQLQuery, Settings } from './types';
-export default class LockrClient {
+export declare class LockrClient {
     private settings;
     private _session?;
     constructor(settings: Settings);
@@ -7,3 +7,4 @@ export default class LockrClient {
     query(data: GraphQLQuery): Promise<any>;
     private readonly session;
 }
+export default LockrClient;

@@ -13,6 +13,7 @@ export {
   SecretInfoStorage,
   Settings,
 } from './types';
+export {LockrClient} from './LockrClient';
 export {Lockr} from './Lockr';
 
 export interface CreateSettingsOptions {
