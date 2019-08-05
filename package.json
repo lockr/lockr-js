@@ -12,9 +12,12 @@
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
     "fmt": "tsfmt -r"
   },
-  "dependencies": {},
+  "dependencies": {
+    "node-forge": "^0.8.5"
+  },
   "devDependencies": {
     "@types/node": "^12.6.9",
+    "@types/node-forge": "^0.8.6",
     "ava": "^2.2.0",
     "ts-node": "^8.3.0",
     "tslint": "^5.18.0",

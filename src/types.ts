@@ -1,9 +1,16 @@
 import * as http2 from 'http2';
 
+export interface CsrSubject {
+  readonly country: string;
+  readonly state: string;
+  readonly locality: string;
+  readonly organization: string;
+}
+
 export interface GraphQLQuery {
   query: string;
-  variables: {[name: string]: any};
-  operationName: string;
+  variables?: {[name: string]: any};
+  operationName?: string;
 }
 
 export interface SecretInfo {
