@@ -1,5 +1,12 @@
 /// <reference types="node" />
 import * as http2 from 'http2';
+export interface GraphQLQuery {
+    query: string;
+    variables: {
+        [name: string]: any;
+    };
+    operationName: string;
+}
 export interface SecretInfo {
     readonly wrapping_key: string;
 }

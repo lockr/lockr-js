@@ -5,14 +5,27 @@
   ],
   "jsRules": {},
   "rules": {
+    "arrow-parens": {
+      "options": "ban-single-arg-parens"
+    },
     "interface-name": {
+      "severity": "off"
+    },
+    "no-shadowed-variable": {
+      "severity": "off"
+    },
+    "object-literal-sort-keys": {
       "severity": "off"
     },
     "quotemark": {
       "options": "single"
     },
     "variable-name": {
-      "options": ["allow-pascal-case", "allow-snake-case"]
+      "options": [
+        "allow-leading-underscore",
+        "allow-pascal-case",
+        "allow-snake-case"
+      ]
     }
   },
   "rulesDirectory": []
