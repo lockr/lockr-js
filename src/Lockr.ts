@@ -171,4 +171,16 @@ export default class Lockr {
     }
     return value;
   }
+
+  public async deleteSecretValue(name: string): Promise<void> {
+    const query = `
+    mutation Delete($input: DeleteClientVersions!) {
+      deleteClientVersions(input: $input)
+    }
+    `;
+    await this.client.query({
+      query,
+      variables: {input: {secretName: name}},
+    });
+  }
 }
