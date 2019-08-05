@@ -13,4 +13,5 @@ export default class Lockr {
     createPantheonClient(client_token: string): Promise<void>;
     getInfo(): Promise<Client>;
     createSecretValue(name: string, value: Buffer, label?: string, sovereignty?: string): Promise<string>;
+    getSecretValue(name: string): Promise<Buffer>;
 }

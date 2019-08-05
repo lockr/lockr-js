@@ -129,18 +129,46 @@ export default class Lockr {
       }
     }
     `;
-    const data = await this.client.query({
-      query,
-      variables: {
-        input: {
-          name,
-          label: label === void 0 ? '' : label,
-          value: ciphertext.toString('base64'),
-          sovereignty,
+    const [data, _] = await Promise.all([
+      this.client.query({
+        query,
+        variables: {
+          input: {
+            name,
+            label: label === void 0 ? '' : label,
+            value: ciphertext.toString('base64'),
+            sovereignty,
+          },
         },
-      },
-    });
-    await this.info.setSecretInfo(name, {wrapping_key});
+      }),
+      this.info.setSecretInfo(name, {wrapping_key}),
+    ]);
     return data.ensureSecretValue.id;
+  }
+
+  public async getSecretValue(name: string): Promise<Buffer> {
+    const query = `
+    query LatestSecretValue($name: String!) {
+      self {
+        secret(name: $name) {
+          latest {
+            value
+          }
+        }
+      }
+    }
+    `;
+    const [data, info] = await Promise.all([
+      this.client.query({
+        query,
+        variables: {name},
+      }),
+      this.info.getSecretInfo(name),
+    ]);
+    let value = Buffer.from(data.self.secret.latest.value, 'base64');
+    if (info !== void 0) {
+      value = Aes256CbcSha256Raw.decrypt(value, info.wrapping_key);
+    }
+    return value;
   }
 }
