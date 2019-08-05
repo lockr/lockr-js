@@ -12,7 +12,7 @@ const default_dn = {
   organization: 'Lockr',
 };
 
-export default class Lockr {
+export class Lockr {
   private client: LockrClient;
   private info: SecretInfoStorage;
 
@@ -210,3 +210,5 @@ export default class Lockr {
     }
   }
 }
+
+export default Lockr;

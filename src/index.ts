@@ -4,6 +4,17 @@ import * as tls from 'tls';
 
 import {Settings} from './types';
 
+export {
+  Client,
+  Keyring,
+  ClientAuth,
+  CsrSubject,
+  SecretInfo,
+  SecretInfoStorage,
+  Settings,
+} from './types';
+export {Lockr} from './Lockr';
+
 export interface CreateSettingsOptions {
   readonly cert_path?: string;
   readonly key_path?: string;

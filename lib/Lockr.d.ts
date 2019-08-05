@@ -1,7 +1,7 @@
 /// <reference types="node" />
 import LockrClient from './LockrClient';
 import { Client, CsrSubject, SecretInfoStorage } from './types';
-export default class Lockr {
+export declare class Lockr {
     private client;
     private info;
     constructor(client: LockrClient, info: SecretInfoStorage);
@@ -19,3 +19,4 @@ export default class Lockr {
     exportSecretData(): Promise<string>;
     importSecretData(info_yaml: string): Promise<void>;
 }
+export default Lockr;
