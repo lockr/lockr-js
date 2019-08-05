@@ -1,4 +1,5 @@
 import {md, pki} from 'node-forge';
+import * as yaml from 'js-yaml';
 
 import {Aes256CbcSha256Raw} from './key-wrapper';
 import LockrClient from './LockrClient';
@@ -195,5 +196,17 @@ export default class Lockr {
       variables: {size: `AES${size}`},
     });
     return Buffer.from(data.randomKey, 'base64');
+  }
+
+  public async exportSecretData(): Promise<string> {
+    const data = await this.info.getAllSecretInfo();
+    return yaml.safeDump(data);
+  }
+
+  public async importSecretData(info_yaml: string): Promise<void> {
+    const data = yaml.safeLoad(info_yaml);
+    for (const [name, info] of data.entries()) {
+      await this.info.setSecretInfo(name, info);
+    }
   }
 }

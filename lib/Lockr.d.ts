@@ -16,4 +16,6 @@ export default class Lockr {
     getSecretValue(name: string): Promise<Buffer>;
     deleteSecretValue(name: string): Promise<void>;
     generateKey(size?: number): Promise<Buffer>;
+    exportSecretData(): Promise<string>;
+    importSecretData(info_yaml: string): Promise<void>;
 }

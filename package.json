@@ -13,9 +13,11 @@
     "fmt": "tsfmt -r"
   },
   "dependencies": {
+    "js-yaml": "^3.13.1",
     "node-forge": "^0.8.5"
   },
   "devDependencies": {
+    "@types/js-yaml": "^3.12.1",
     "@types/node": "^12.6.9",
     "@types/node-forge": "^0.8.6",
     "ava": "^2.2.0",
