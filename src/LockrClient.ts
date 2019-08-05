@@ -59,7 +59,7 @@ export class LockrClient {
     if (this._session !== void 0) {
       return this._session;
     }
-    return http2.connect(this.settings.hostname, {
+    return http2.connect(`https://${this.settings.hostname}`, {
       ...this.settings.options,
     });
   }
