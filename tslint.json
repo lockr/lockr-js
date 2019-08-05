@@ -1,0 +1,19 @@
+{
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint:recommended"
+  ],
+  "jsRules": {},
+  "rules": {
+    "interface-name": {
+      "severity": "off"
+    },
+    "quotemark": {
+      "options": "single"
+    },
+    "variable-name": {
+      "options": ["allow-pascal-case", "allow-snake-case"]
+    }
+  },
+  "rulesDirectory": []
+}
