@@ -56,12 +56,15 @@ export class LockrClient {
   }
 
   private get session(): http2.ClientHttp2Session {
-    if (this._session !== void 0) {
-      return this._session;
+    if (this._session === void 0) {
+      this._session = http2.connect(`https://${this.settings.hostname}`, {
+        ...this.settings.options,
+      });
+      this._session.on('error', err => {
+        this._session = void 0;
+      });
     }
-    return http2.connect(`https://${this.settings.hostname}`, {
-      ...this.settings.options,
-    });
+    return this._session;
   }
 }
 
