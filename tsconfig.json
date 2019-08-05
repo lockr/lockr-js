@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ES2015",
+    "declaration": true,
+    "module": "CommonJS",
+    "newLine": "lf",
+    "strict": true,
+    "outDir": "./lib",
+    "rootDir": "./src",
+    "lib": ["ES2015"]
+  },
+  "include": ["./src/**/*.ts"],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
+}

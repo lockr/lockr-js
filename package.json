@@ -1,0 +1,25 @@
+{
+  "name": "lockr-js",
+  "version": "0.1.0",
+  "description": "Lockr client for Node.js",
+  "main": "lib/index.js",
+  "author": "Tynor Fujimoto <tynor@lockr.io>",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "test": "ava"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^12.6.9",
+    "ava": "^2.2.0",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.3"
+  },
+  "ava": {
+    "compileEnhancements": false,
+    "extensions": ["ts"],
+    "require": ["ts-node/register"]
+  }
+}
