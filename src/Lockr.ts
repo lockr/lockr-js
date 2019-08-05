@@ -69,4 +69,22 @@ export default class Lockr {
       env: resp.createCertClient.env,
     };
   }
+
+  public async createPantheonClient(client_token: string): Promise<void> {
+    const query = `
+    mutation CreatePantheonClient($input: CreatePantheonClient!) {
+      createPantheonClient(input: $input) {
+        id
+      }
+    }
+    `;
+    await this.client.query({
+      query,
+      variables: {
+        input: {
+          token: client_token,
+        },
+      },
+    });
+  }
 }

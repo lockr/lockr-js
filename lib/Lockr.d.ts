@@ -9,4 +9,5 @@ export default class Lockr {
         key_text: string;
         env: string;
     }>;
+    createPantheonClient(client_token: string): Promise<void>;
 }
