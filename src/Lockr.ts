@@ -84,9 +84,7 @@ export class Lockr {
   public async createPantheonClient(client_token: string): Promise<void> {
     const query = `
     mutation CreatePantheonClient($input: CreatePantheonClient!) {
-      createPantheonClient(input: $input) {
-        id
-      }
+      createPantheonClient(input: $input)
     }
     `;
     await this.query({
