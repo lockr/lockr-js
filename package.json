@@ -1,9 +1,17 @@
 {
-  "name": "lockr-js",
-  "version": "0.1.0",
+  "name": "lockr-client",
+  "version": "2.0.0",
   "description": "Lockr client for Node.js",
   "main": "lib/index.js",
-  "author": "Tynor Fujimoto <tynor@lockr.io>",
+  "keywords": [
+    "security",
+    "key-management"
+  ],
+  "homepage": "https://github.com/lockr/lockr-js",
+  "author": {
+    "name": "Tynor Fujimoto",
+    "email": "tynor@lockr.io"
+  },
   "license": "MIT",
   "scripts": {
     "build": "tsc",
