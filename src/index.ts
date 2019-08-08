@@ -13,8 +13,8 @@ export {
   SecretInfoStorage,
   Settings,
 } from './types';
-export {LockrClient} from './LockrClient';
 export {Lockr} from './Lockr';
+export {FileSecretInfo} from './FileSecretInfo';
 
 export interface CreateSettingsOptions {
   readonly cert_path?: string;

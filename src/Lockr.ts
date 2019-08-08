@@ -1,9 +1,15 @@
+import * as http2 from 'http2';
 import * as yaml from 'js-yaml';
 import {md, pki} from 'node-forge';
 
 import {Aes256CbcSha256Raw} from './key-wrapper';
-import LockrClient from './LockrClient';
-import {Client, CsrSubject, SecretInfoStorage} from './types';
+import {
+  Client,
+  CsrSubject,
+  GraphQLQuery,
+  SecretInfoStorage,
+  Settings,
+} from './types';
 
 const default_dn = {
   country: 'US',
@@ -12,12 +18,15 @@ const default_dn = {
   organization: 'Lockr',
 };
 
-export class Lockr {
-  private client: LockrClient;
-  private info: SecretInfoStorage;
+const user_agent = `node/${process.version} LockrClient/0.1.0`;
 
-  constructor(client: LockrClient, info: SecretInfoStorage) {
-    this.client = client;
+export class Lockr {
+  private info: SecretInfoStorage;
+  private settings: Settings;
+  private _session?: http2.ClientHttp2Session;
+
+  constructor(settings: Settings, info: SecretInfoStorage) {
+    this.settings = settings;
     this.info = info;
   }
 
@@ -56,7 +65,7 @@ export class Lockr {
       }
     }
     `;
-    const resp = await this.client.query({
+    const resp = await this.query({
       query,
       variables: {
         input: {
@@ -80,7 +89,7 @@ export class Lockr {
       }
     }
     `;
-    await this.client.query({
+    await this.query({
       query,
       variables: {
         input: {
@@ -110,7 +119,7 @@ export class Lockr {
       }
     }
     `;
-    return await this.client.query({query});
+    return await this.query({query});
   }
 
   public async createSecretValue(
@@ -131,7 +140,7 @@ export class Lockr {
     }
     `;
     const [data, _] = await Promise.all([
-      this.client.query({
+      this.query({
         query,
         variables: {
           input: {
@@ -160,7 +169,7 @@ export class Lockr {
     }
     `;
     const [data, info] = await Promise.all([
-      this.client.query({
+      this.query({
         query,
         variables: {name},
       }),
@@ -179,7 +188,7 @@ export class Lockr {
       deleteClientVersions(input: $input)
     }
     `;
-    await this.client.query({
+    await this.query({
       query,
       variables: {input: {secretName: name}},
     });
@@ -191,7 +200,7 @@ export class Lockr {
       randomKey(size: $size)
     }
     `;
-    const data = await this.client.query({
+    const data = await this.query({
       query,
       variables: {size: `AES${size}`},
     });
@@ -208,6 +217,61 @@ export class Lockr {
     for (const [name, info] of data.entries()) {
       await this.info.setSecretInfo(name, info);
     }
+  }
+
+  public close(): void {
+    if (this._session !== void 0) {
+      this._session.close();
+    }
+  }
+
+  private query(data: GraphQLQuery): Promise<any> {
+    const body = JSON.stringify(data);
+    const stream = this.session.request({
+      ':method': 'POST',
+      ':path': '/graphql',
+      'accept': 'application/json',
+      'user-agent': user_agent,
+      'content-type': 'application/json',
+      'content-length': body.length,
+    });
+    stream.end(body);
+    return new Promise((res, rej) => {
+      stream.on('response', (headers, flags) => {
+        const chunks: Buffer[] = [];
+        let len = 0;
+        stream.on('data', chunk => {
+          chunks.push(chunk);
+          len += chunk.length;
+        });
+        stream.on('end', () => {
+          const data = Buffer.concat(chunks, len).toString();
+          try {
+            const body = JSON.parse(data);
+            const status = headers[':status'];
+            if (status === void 0 || status >= 400) {
+              rej(new Error(`Error status: ${status}`));
+            } else {
+              res(body.data);
+            }
+          } catch (e) {
+            rej(e);
+          }
+        });
+      });
+    });
+  }
+
+  private get session(): http2.ClientHttp2Session {
+    if (this._session === void 0) {
+      this._session = http2.connect(`https://${this.settings.hostname}`, {
+        ...this.settings.options,
+      });
+      this._session.on('error', err => {
+        this._session = void 0;
+      });
+    }
+    return this._session;
   }
 }
 

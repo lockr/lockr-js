@@ -1,10 +1,10 @@
 /// <reference types="node" />
-import LockrClient from './LockrClient';
-import { Client, CsrSubject, SecretInfoStorage } from './types';
+import { Client, CsrSubject, SecretInfoStorage, Settings } from './types';
 export declare class Lockr {
-    private client;
     private info;
-    constructor(client: LockrClient, info: SecretInfoStorage);
+    private settings;
+    private _session?;
+    constructor(settings: Settings, info: SecretInfoStorage);
     createCertClient(client_token: string, dn?: CsrSubject): Promise<{
         cert_text: string;
         key_text: string;
@@ -18,5 +18,8 @@ export declare class Lockr {
     generateKey(size?: number): Promise<Buffer>;
     exportSecretData(): Promise<string>;
     importSecretData(info_yaml: string): Promise<void>;
+    close(): void;
+    private query;
+    private readonly session;
 }
 export default Lockr;
