@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "js-yaml": "^3.13.1",
-    "node-forge": "^0.8.5"
+    "node-forge": "^0.10.0"
   },
   "devDependencies": {
     "@types/js-yaml": "^3.12.1",
